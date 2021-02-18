@@ -14,7 +14,7 @@ if (isset($_POST['submit']) === true) {
 }
 // define variables and begin with empty values
 $emailErr = $streetErr = $streetNumberErr = $cityErr = $zipcodeErr = '';
-$email = $street = $streetNumber = $city = $zipcode = '';
+$street = $streetNumber = $city = $zipcode = '';
 
 //validation email
 /*if (isset($_POST['email'])== true  && empty ($_POST['email'])==false) {
@@ -26,14 +26,26 @@ $email = $street = $streetNumber = $city = $zipcode = '';
     }
 }*/
 
+
 //all inputs must be filled
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // isset="exists"   !empty= is different than empty
-    if (!empty ($_POST['email'])) {
-        if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) { //use var $_POST['email'] cause we need to validate what client wrote, not the empty variable I created
+    /*if (!empty ($_POST['email'] && (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) { //use var $_POST['email'] cause we need to validate what client wrote, not the empty variable I created
             $email = $_POST['email'];
         } else {
             $emailErr = 'Enter a valid email';
+        }*/
+
+        if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) === false) {
+            $emailErr = 'Enter a valid email';
+        } else {
+            $email = $_POST['email'];
+        }
+
+        if (empty ($_POST['email'])) {
+            $emailErr ='Enter a valid email';
+        }else{
+            $email= $_POST['email'];
         }
 
         if (empty($_POST['street'])) {
@@ -62,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         else {
             $zipcode = $_POST['zipcode'];
         }
-    }
+
 }
 
 // mail send
